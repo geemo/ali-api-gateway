@@ -1,21 +1,15 @@
 'use strict';
 const co = require('co');
 
-var newError = function(code, message) {
-  var err = new Error(message);
-  err.code = code;
-  return err;
-};
-
 class ApiGateWay {
   constructor(options) {
-    options = options || {};
+    this.options = options || {};
     this.middlewares = [];
   }
 
   use(middleware) {
     if (typeof middleware !== 'function') {
-      throw newError(500, 'apiGateWap');
+      throw new Error('middleware must be function');
     }
     this.middlewares.push(middleware);
   }
@@ -24,7 +18,6 @@ class ApiGateWay {
     var middlewares = this.middlewares;
     return function(event, context, callback) {
       const ctx = {
-        newError: newError,
         event: event,
         context: context,
         result: {}
@@ -38,7 +31,7 @@ class ApiGateWay {
         yield prev();
         return callback(null, ctx.result);
       }).catch(err => {
-        return callback(null, err);
+        return callback(err, {});
       });
     };
   }

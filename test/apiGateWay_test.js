@@ -44,3 +44,15 @@ test.cb('raw params in context and return result', t => {
     t.end();
   });
 });
+
+test.cb('throw error', t => {
+  const apiGateWay = new ApiGateWay();
+  apiGateWay.use(function *() {
+    throw new Error('test');
+  });
+
+  apiGateWay.wrap()(new Buffer('{}'), {}, function(err) {
+    t.true(err.message === 'test');
+    t.end();
+  });
+});
