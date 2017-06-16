@@ -4,7 +4,7 @@
   "description": "proxy ali api gate way",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava ./test"
   },
   "keywords": [
     "ali",
@@ -12,5 +12,9 @@
     "gateway"
   ],
   "author": "jinhai.wang",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "ava": "^0.19.1",
+    "co": "^4.6.0"
+  }
 }
