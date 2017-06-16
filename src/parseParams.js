@@ -7,19 +7,9 @@ var newError = function(code, message) {
   return err;
 };
 
-const emptyReq = {
-  path: '',
-  httpMehtod: '',
-  headers: {},
-  queryParameters: {},
-  pathParameters: {},
-  body: {},
-  isBase64Encoded: false
-};
-
 module.exports = function *(next) {
   const self = this;
-  const event = JSON.parse(this.event.toString() || JSON.stringify(emptyReq));
+  const event = JSON.parse(this.event.toString());
   if (event.body && event.isBase64Encoded) {
     event.body = JSON.parse(new Buffer(event.body, 'base64').toString());
   }
