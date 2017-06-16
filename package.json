@@ -11,10 +11,15 @@
     "api",
     "gateway"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JeremyWei/easy_mongo.git"
+  },
   "author": "jinhai.wang",
   "license": "MIT",
   "dependencies": {
     "ava": "^0.19.1",
+    "axios": "^0.16.2",
     "co": "^4.6.0"
   }
 }
