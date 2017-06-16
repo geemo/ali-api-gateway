@@ -9,7 +9,7 @@ var newError = function(code, message) {
 
 class ApiGateWay {
   constructor(options) {
-    options = options || {}
+    options = options || {};
     this.middlewares = [];
   }
 
@@ -28,7 +28,7 @@ class ApiGateWay {
         event: event,
         context: context,
         result: {}
-      }
+      };
       co(function *() {
         var index = middlewares.length;
         var prev = function *() {};

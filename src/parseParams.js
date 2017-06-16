@@ -1,3 +1,6 @@
+'use strict';
+
+const co = require('co');
 const emptyReq = {
   path: '',
   httpMehtod: '',
@@ -9,7 +12,7 @@ const emptyReq = {
 };
 
 module.exports = function *(next) {
-  const self = this
+  const self = this;
   const event = JSON.parse(this.event.toString() || JSON.stringify(emptyReq));
   if (event.body && event.isBase64Encoded) {
     event.body = JSON.parse(new Buffer(event.body, 'base64').toString());
@@ -18,16 +21,16 @@ module.exports = function *(next) {
   this.body = {};
   this.res = {
     headers: {},
-    statusCode: 200,
-  }
+    statusCode: 200
+  };
 
-  this.result = co(function * () {
+  this.result = co(function *() {
     yield next();
     self.res.body = self.body;
     return self.res;
   }).catch(err => {
-    return wrapError(err)
-  })
+    return wrapError(err);
+  });
 };
 
 var wrapError = function(err) {
