@@ -1,12 +1,13 @@
 'use strict';
 
 const test = require('ava');
-const ApiGateWay = require('../src/ApiGateWay');
-const parsePrams = require('../src/parseParams');
+const apiGateWay = require('../');
+const GateWay = apiGateWay.GateWay;
+const middlewares = apiGateWay.middlewares;
 
 test.cb('parse params success', t => {
-  const apiGateWay = new ApiGateWay();
-  apiGateWay.use(parsePrams);
+  const apiGateWay = new GateWay();
+  apiGateWay.use(middlewares.parseParams);
   apiGateWay.use(function *() {
     this.body = 'test';
     t.true(this.req.test === 'test');
@@ -20,8 +21,8 @@ test.cb('parse params success', t => {
 });
 
 test.cb('parse params success', t => {
-  const apiGateWay = new ApiGateWay();
-  apiGateWay.use(parsePrams);
+  const apiGateWay = new GateWay();
+  apiGateWay.use(middlewares.parseParams);
   apiGateWay.use(function *() {
     throw this.newError(400, 'error params');
   });
