@@ -1,10 +1,9 @@
 'use strict';
 const test = require('ava');
-const apiGateWay = require('../');
-const GateWay = apiGateWay.GateWay;
+const ApiGateWay = require('../');
 
 test.cb('middlewares run right', t => {
-  const apiGateWay = new GateWay();
+  const apiGateWay = new ApiGateWay({parseParams: false});
   apiGateWay.use(function *(next) {
     this.result = [];
     this.result.push(1);
@@ -29,7 +28,7 @@ test.cb('middlewares run right', t => {
 });
 
 test.cb('raw params in context and return result', t => {
-  const apiGateWay = new GateWay();
+  const apiGateWay = new ApiGateWay({parseParams: false});
   apiGateWay.use(function *() {
     this.result = {
       event: this.event.toString(),
@@ -47,7 +46,7 @@ test.cb('raw params in context and return result', t => {
 });
 
 test.cb('throw error', t => {
-  const apiGateWay = new GateWay();
+  const apiGateWay = new ApiGateWay({parseParams: false});
   apiGateWay.use(function *() {
     throw new Error('test');
   });

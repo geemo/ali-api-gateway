@@ -1,16 +1,49 @@
 'use strict';
-const GateWay = require('./src/gate-way.js');
-const getSSOInfo = require('./src/get-sso-info.js');
+const co = require('co');
 const parseParams = require('./src/parse-params.js');
-const allowedCrossOrigin = require('./src/allowed-cross-origin.js');
 
-const middlewares = {
-  getSSOInfo,
-  parseParams,
-  allowedCrossOrigin
+const defaultOptions = {
+  parseParams: true
 };
 
-module.exports = {
-  GateWay,
-  middlewares
-};
+class ApiGateWay {
+  constructor(options) {
+    options = options || {};
+    this.options = Object.assign(defaultOptions, options);
+    this.middlewares = [];
+    if (this.options.parseParams) {
+      this.use(parseParams);
+    }
+  }
+
+  use(middleware) {
+    if (typeof middleware !== 'function') {
+      throw new Error('middleware must be function');
+    }
+    this.middlewares.push(middleware);
+  }
+
+  wrap() {
+    var middlewares = this.middlewares;
+    return function(event, context, callback) {
+      const ctx = {
+        event: event,
+        context: context,
+        result: {}
+      };
+      co(function *() {
+        var index = middlewares.length;
+        var prev = function *() {};
+        while (index--) {
+          prev = middlewares[index].bind(ctx, prev);
+        }
+        yield prev();
+        return callback(null, ctx.result);
+      }).catch(err => {
+        return callback(err, {});
+      });
+    };
+  }
+}
+
+module.exports = ApiGateWay;
