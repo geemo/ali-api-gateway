@@ -1,5 +1,5 @@
 {
-  "name": "api-gate-way",
+  "name": "ali-api-gateway",
   "version": "0.0.1",
   "description": "proxy ali api gate way",
   "main": "index.js",
