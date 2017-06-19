@@ -1,6 +1,6 @@
 {
   "name": "ali-api-gateway",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "proxy ali api gate way",
   "main": "index.js",
   "scripts": {
@@ -17,8 +17,10 @@
   },
   "author": "jinhai.wang",
   "license": "MIT",
+  "devDependencies": {
+    "ava": "^0.19.1"
+  },
   "dependencies": {
-    "ava": "^0.19.1",
     "axios": "^0.16.2",
     "co": "^4.6.0"
   }
