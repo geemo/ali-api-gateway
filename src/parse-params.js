@@ -13,6 +13,8 @@ module.exports = function *(next) {
   if (event.body && event.isBase64Encoded) {
     event.body = JSON.parse(new Buffer(event.body, 'base64').toString());
   }
+
+  if (!event.body) event.body = {};
   this.newError = newError;
   this.req = event;
   this.body = {};
