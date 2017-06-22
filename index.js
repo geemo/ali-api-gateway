@@ -1,6 +1,7 @@
 'use strict';
 const co = require('co');
 const parseParams = require('./src/parse-params.js');
+const log = require('./src/log.js');
 
 const defaultOptions = {
   parseParams: true
@@ -13,6 +14,7 @@ class ApiGateWay {
     this.middlewares = [];
     if (this.options.parseParams) {
       this.use(parseParams);
+      this.use(log);
     }
   }
 
