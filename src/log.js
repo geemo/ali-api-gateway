@@ -24,6 +24,7 @@ module.exports = function *(next) {
     const req = this.req;
     const context = this.context;
     const basicInfo = {
+      'appName': 'serverless',
       'd': {
         'method': req.httpMethod,
         'path': req.path,
