@@ -54,11 +54,28 @@ const durationInfo = {
 };
 
 const axios = require('axios');
-const querystring = require('querystring');
+
+const serialize = function(obj, prefix) {
+  var str = [];
+  var p;
+  for (p in obj) {
+    var v = obj[p]; // but dont show undefined keys
+    if (obj.hasOwnProperty(p) && v != null) {
+      var k = prefix ? prefix + '[' + p + ']' : p;
+      str.push(
+        v !== null && typeof v === 'object'
+          ? serialize(v, k)
+          : encodeURIComponent(k) + '=' + encodeURIComponent(v)
+      );
+    }
+  }
+  return str.join('&');
+};
 
 const log = function(info) {
-  const str = querystring.stringify(info);
+  const str = serialize(info);
   const url = `https://perf.alpha.elenet.me/_.gif?${str}`;
+  console.log(url);
   return axios(url);
 };
 const run = function() {

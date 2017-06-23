@@ -22,7 +22,6 @@ test.cb('parse params success', t => {
     t.true(this.context.haha === 'haha');
   });
   apiGateWay.wrap()(new Buffer(JSON.stringify(Object.assign(basicEvent, {test: 'test'}))), Object.assign(basicContext, {haha: 'haha'}), function(err, res) {
-    console.log(err, res);
     t.true(res.statusCode === 200);
     t.true(res.body === 'test');
     t.end();
