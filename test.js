@@ -26,9 +26,11 @@ const context = {
 };
 
 const success = Math.random() >= 0.5;
-const duration = 300 * Math.random();
+const duration = 300;
 
 const coutInfo = {
+  'id': 'https://serverless.ele.me',
+  'appName': 'serverless',
   'type': 'serverless-count',
   'd': {
     'method': req.httpMethod,
@@ -41,6 +43,7 @@ const coutInfo = {
 };
 
 const durationInfo = {
+  'id': 'https://serverless.ele.me',
   'appName': 'serverless',
   'type': 'serverless-duration',
   'd': {
@@ -74,14 +77,18 @@ const serialize = function(obj, prefix) {
 
 const log = function(info) {
   const str = serialize(info);
-  const url = `https://perf.alpha.elenet.me/_.gif?${str}`;
-  console.log(url);
-  return axios(url);
+  const url = `https://perf.ele.me/_.gif?${str}`;
+  return axios(url, {
+    headers: {
+      'referer': 'https://serverless.ele.me',
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+    }
+  });
 };
 const run = function() {
   log(coutInfo).then(res => console.log(res.status)).catch(err => console.log('err', err));
   log(durationInfo).then(res =>console.log(res.status)).catch(err => console.log('err', err));
-  setTimeout(run, 4000);
+  setTimeout(run, 10);
 };
 
 run();

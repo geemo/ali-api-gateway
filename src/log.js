@@ -22,7 +22,12 @@ const serialize = function(obj, prefix) {
 const log = function(info) {
   const str = serialize(info);
   const url = `https://perf.ele.me/_.gif?${str}`;
-  return axios(url);
+  return axios(url, {
+    headers: {
+      'referer': info.ref,
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+    }
+  });
 };
 
 module.exports = function *(next) {
@@ -39,7 +44,10 @@ module.exports = function *(next) {
     const duration = end - start;
     const req = this.req;
     const context = this.context;
+    const ref = `https://serverless.ele.me/${req.path}`;
     const basicInfo = {
+      'id': ref,
+      'referer': ref,
       'appName': 'serverless',
       'd': {
         'method': req.httpMethod,
