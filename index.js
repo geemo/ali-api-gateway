@@ -14,7 +14,7 @@ class ApiGateWay {
     this.middlewares = [];
     if (this.options.parseParams) {
       this.use(parseParams);
-      this.use(log);
+      // this.use(log);
     }
   }
 

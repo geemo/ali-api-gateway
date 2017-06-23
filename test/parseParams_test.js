@@ -3,6 +3,17 @@
 const test = require('ava');
 const ApiGateWay = require('../');
 
+const basicEvent = {
+  httpMethod: 'POST',
+  path: 'test/test'
+};
+
+const basicContext = {
+  function: {
+    name: 'test'
+  }
+};
+
 test.cb('parse params success', t => {
   const apiGateWay = new ApiGateWay();
   apiGateWay.use(function *() {
@@ -10,19 +21,20 @@ test.cb('parse params success', t => {
     t.true(this.req.test === 'test');
     t.true(this.context.haha === 'haha');
   });
-  apiGateWay.wrap()(new Buffer('{"test": "test"}'), {haha: 'haha'}, function(err, res) {
+  apiGateWay.wrap()(new Buffer(JSON.stringify(Object.assign(basicEvent, {test: 'test'}))), Object.assign(basicContext, {haha: 'haha'}), function(err, res) {
+    console.log(err, res);
     t.true(res.statusCode === 200);
     t.true(res.body === 'test');
     t.end();
   });
 });
 
-test.cb('parse params success', t => {
+test.cb('parse params catch error success', t => {
   const apiGateWay = new ApiGateWay();
   apiGateWay.use(function *() {
     throw this.newError(400, 'error params');
   });
-  apiGateWay.wrap()(new Buffer('{}'), {}, function(err, res) {
+  apiGateWay.wrap()(new Buffer(JSON.stringify(Object.assign(basicEvent, {test: 'test'}))), Object.assign(basicContext, {haha: 'haha'}), function(err, res) {
     t.true(res.statusCode === 400);
     t.true(res.body.error === 'error params');
     t.end();
